@@ -9,7 +9,7 @@ package yunpian
 // func TestSingleSend(t *testing.T) {
 // 	sms := NewClient(DefaultConfig().WithAPIKey("").WithUseSSL(true)).SMS()
 // 	input := &SingleSendRequest{
-// 		Mobile: "13320942172",
+// 		Mobile: "13800138000",
 // 		Text:   "您的验证码为332211,请不要告诉其他人哦",
 // 	}
 
@@ -21,7 +21,7 @@ package yunpian
 // func TestInternationalSingleSend(t *testing.T) {
 // 	sms := NewClient(DefaultConfig().WithAPIKey("").WithUseSSL(true)).SMS()
 // 	input := &SingleSendRequest{
-// 		Mobile: "+19782268687",
+// 		Mobile: "+19876543210",
 // 		Text:   "【BlockCDN】Verification code 332211",
 // 	}
 
