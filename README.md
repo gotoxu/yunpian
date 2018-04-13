@@ -25,11 +25,11 @@ func main() {
 		Text:   "您的验证码为332211,请不要告诉其他人哦",
 	}
 
-    resp, err := sms.SingleSend(input)
-    if err != nil {
-        panic(err)
-    }
+	resp, err := sms.SingleSend(input)
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Printf("短信发送是否成功: %t\n", resp.IsSuccess())
+	fmt.Printf("短信发送是否成功: %t\n", resp.IsSuccess())
 }
 ```
