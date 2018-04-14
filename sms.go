@@ -65,10 +65,10 @@ func (sms *SMS) SingleSend(input *SingleSendRequest) (*SingleSendResponse, error
 
 // BatchSendRequest 批量发送请求参数
 type BatchSendRequest struct {
-	Mobile      string `schema:"mobile,omitempty"`
-	Text        string `schema:"text,omitempty"`
-	Extend      string `schema:"extend,omitempty"`
-	CallbackURL string `schema:"callback_url,omitempty"`
+	Mobile      string `url:"mobile,omitempty"`
+	Text        string `url:"text,omitempty"`
+	Extend      string `url:"extend,omitempty"`
+	CallbackURL string `url:"callback_url,omitempty"`
 }
 
 // Verify 用于检查请求参数的正确性
@@ -104,10 +104,10 @@ func (sms *SMS) BatchSend(input *BatchSendRequest) (*BatchSendResponse, error) {
 
 // MultiSendRequest 批量个性化发送请求参数
 type MultiSendRequest struct {
-	Mobile      string `schema:"mobile,omitempty"`
-	Text        string `schema:"text,omitempty"`
-	Extend      string `schema:"extend,omitempty"`
-	CallbackURL string `schema:"callback_url,omitempty"`
+	Mobile      string `url:"mobile,omitempty"`
+	Text        string `url:"text,omitempty"`
+	Extend      string `url:"extend,omitempty"`
+	CallbackURL string `url:"callback_url,omitempty"`
 }
 
 // Verify 用于检查请求参数的有效性
@@ -143,11 +143,11 @@ func (sms *SMS) MultiSend(input *MultiSendRequest) (*MultiSendResponse, error) {
 
 // TPLSingleSendRequest 指定模板单发请求参数
 type TPLSingleSendRequest struct {
-	Mobile   string `schema:"mobile,omitempty"`
-	TPLID    int64  `schema:"tpl_id,omitempty"`
-	TPLValue string `schema:"tpl_value,omitempty"`
-	Extend   string `schema:"extend,omitempty"`
-	UID      string `schema:"uid,omitempty"`
+	Mobile   string `url:"mobile,omitempty"`
+	TPLID    int64  `url:"tpl_id,omitempty"`
+	TPLValue string `url:"tpl_value,omitempty"`
+	Extend   string `url:"extend,omitempty"`
+	UID      string `url:"uid,omitempty"`
 }
 
 // Verify 用于检查请求参数的有效性
@@ -178,11 +178,11 @@ func (sms *SMS) TPLSingleSend(input *TPLSingleSendRequest) (*SingleSendResponse,
 
 // TPLBatchSendRequest 指定模板群发请求参数
 type TPLBatchSendRequest struct {
-	Mobile   string `schema:"mobile,omitempty"`
-	TPLID    int64  `schema:"tpl_id,omitempty"`
-	TPLValue string `schema:"tpl_value,omitempty"`
-	Extend   string `schema:"extend,omitempty"`
-	UID      string `schema:"uid,omitempty"`
+	Mobile   string `url:"mobile,omitempty"`
+	TPLID    int64  `url:"tpl_id,omitempty"`
+	TPLValue string `url:"tpl_value,omitempty"`
+	Extend   string `url:"extend,omitempty"`
+	UID      string `url:"uid,omitempty"`
 }
 
 // Verify 检查请求参数的有效性
