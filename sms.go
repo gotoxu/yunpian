@@ -1,8 +1,12 @@
 package yunpian
 
 import (
+	"bytes"
 	"errors"
+	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SMS 是短信发送客户端
@@ -143,6 +147,14 @@ func (sms *SMS) MultiSend(input *MultiSendRequest) (*MultiSendResponse, error) {
 
 // TPLSingleSendRequest 指定模板单发请求参数
 type TPLSingleSendRequest struct {
+	Mobile   string
+	TPLID    int64
+	TPLValue map[string]string
+	Extend   string
+	UID      string
+}
+
+type tplSingleSendParameter struct {
 	Mobile   string `url:"mobile,omitempty"`
 	TPLID    int64  `url:"tpl_id,omitempty"`
 	TPLValue string `url:"tpl_value,omitempty"`
@@ -151,7 +163,7 @@ type TPLSingleSendRequest struct {
 }
 
 // Verify 用于检查请求参数的有效性
-func (req *TPLSingleSendRequest) Verify() error {
+func (req *tplSingleSendParameter) Verify() error {
 	if len(req.Mobile) == 0 {
 		return errors.New("Miss param: mobile")
 	}
@@ -171,13 +183,43 @@ func (sms *SMS) TPLSingleSend(input *TPLSingleSendRequest) (*SingleSendResponse,
 		input = &TPLSingleSendRequest{}
 	}
 
+	param := &tplSingleSendParameter{
+		Mobile: input.Mobile,
+		TPLID:  input.TPLID,
+		Extend: input.Extend,
+		UID:    input.UID,
+	}
+
+	buffer := bytes.NewBufferString("")
+	for k, v := range input.TPLValue {
+		key := fmt.Sprintf("#%s#", k)
+		buffer.WriteString(url.QueryEscape(key))
+		buffer.WriteString("=")
+		buffer.WriteString(url.QueryEscape(v))
+		buffer.WriteString("&")
+	}
+
+	value := buffer.String()
+	if len(value) > 0 {
+		value = strings.TrimSuffix(value, "&")
+	}
+	param.TPLValue = value
+
 	var result SingleSendResponse
-	err := sms.sendRequest(http.MethodPost, "/v2/sms/tpl_single_send.json", input, &result)
+	err := sms.sendRequest(http.MethodPost, "/v2/sms/tpl_single_send.json", param, &result)
 	return &result, err
 }
 
 // TPLBatchSendRequest 指定模板群发请求参数
 type TPLBatchSendRequest struct {
+	Mobile   string
+	TPLID    int64
+	TPLValue map[string]string
+	Extend   string
+	UID      string
+}
+
+type tplBatchSendParameter struct {
 	Mobile   string `url:"mobile,omitempty"`
 	TPLID    int64  `url:"tpl_id,omitempty"`
 	TPLValue string `url:"tpl_value,omitempty"`
@@ -186,7 +228,7 @@ type TPLBatchSendRequest struct {
 }
 
 // Verify 检查请求参数的有效性
-func (req *TPLBatchSendRequest) Verify() error {
+func (req *tplBatchSendParameter) Verify() error {
 	if len(req.Mobile) == 0 {
 		return errors.New("Miss param: mobile")
 	}
@@ -206,8 +248,30 @@ func (sms *SMS) TPLBatchSend(input *TPLBatchSendRequest) (*BatchSendResponse, er
 		input = &TPLBatchSendRequest{}
 	}
 
+	param := &tplBatchSendParameter{
+		Mobile: input.Mobile,
+		TPLID:  input.TPLID,
+		Extend: input.Extend,
+		UID:    input.UID,
+	}
+
+	buffer := bytes.NewBufferString("")
+	for k, v := range input.TPLValue {
+		key := fmt.Sprintf("#%s#", k)
+		buffer.WriteString(url.QueryEscape(key))
+		buffer.WriteString("=")
+		buffer.WriteString(url.QueryEscape(v))
+		buffer.WriteString("&")
+	}
+
+	value := buffer.String()
+	if len(value) > 0 {
+		value = strings.TrimSuffix(value, "&")
+	}
+	param.TPLValue = value
+
 	var result BatchSendResponse
-	err := sms.sendRequest(http.MethodPost, "/v2/sms/tpl_batch_send.json", input, &result)
+	err := sms.sendRequest(http.MethodPost, "/v2/sms/tpl_batch_send.json", param, &result)
 	return &result, err
 }
 
